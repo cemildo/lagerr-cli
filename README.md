@@ -1,17 +1,73 @@
 # lager-cli
-An npm library for managing in local kubernetes infrastructure: setup cluster, load services, testing with k6 and destroying cluster functionality.
+An npm library for managing in local kubernetes infrastructure: setup cluster, load services, testing with k6 and destroying cluster.
 
-## 1 -  node and npm versions
-![alt text](img/node_npm_version.png)
+## Reproducibility
 
-## 2 - downlaod both lagerr and lagerr-cli 
-make sure you download both repos in the same folder because we will need to set up root path for lagerr-cli to find files under infrastructure folder.
+This repository provides all necessary artifacts to reproduce the experimental results presented in the thesis.
+
+The environment can be fully recreated and be tested by using:
+
+- lagerr setup
+- lagerr test
+- lagerr destroy
+
+## Networking / Host Configuration
+
+During `lagerr setup`, the required host entries (e.g. `proxy.localhost`, `rmq.localhost`, `monitoring.localhost`) are automatically added to the system's hosts file.
+
+This allows accessing services via browser without manual configuration.
+
+Note:
+- On macOS, this requires elevated permissions (sudo)
+- If this step fails, the domains must be added manually to `/etc/hosts`
+
+## Kubernetes Setup
+
+The system uses a local Kubernetes cluster via KIND.
+
+KIND and kubectl must be installed manually before running `lagerr setup`.
+
+The `lagerr setup` command will then create and configure the cluster automatically.
+
+## Repository
+
+The full source code and all artifacts are available at:
+
+https://github.com/cemildo/lagerr  
+https://github.com/cemildo/lagerr-cli
+
+## 1 -  Prerequisites
+
+### node version
+v24.7.0
+
+### npm version
+9.8.0
+
+### Docker Desktop: 
+v4.15.0
+
+### kind version
+kind v0.30.0 go1.25.0 darwin/arm64
+(if not installed `brew install kind`)
+
+### kubectl version
+Client Version: v1.34.0
+Kustimize Version: v5.7.1
+(if not installed `brew install kubectl`)
+
+## 2 - download both lagerr and lagerr-cli 
+make sure you download both repos in the same folder because we will need to set up root path for lagerr-cli to find files under infrastructur folder.
+
+https://github.com/cemildo/lagerr-cli
+https://github.com/cemildo/lagerr
+
 
 ![alt text](img/download-repos.png)
 
 ## 3 - navigate into lagerr-cli
 > `npm install -g . `
-this will install the library in your computer in the global npm folders, so it is usable in every terminal you open. if it does not appear in your current terminal, close the terminal session and open a new one and type `lagerr` you should get some thing like: 
+this will install the library in your computer in the global npm folders, so it is usable in every terminal you open. if it does not appear in your current terminal, close the terminal session and open a new one and type `lagerr` you should get something like: 
 
 ![alt text](img/lagerr_help.png)
 
@@ -34,7 +90,7 @@ if you prefer to have it, install it and run it by `open -a Lens` command. this 
 
 ![alt text](img/lens_view.png)
 
-## 5 - get postgtres ready
+## 5 - get PostgreSQL ready
 
 check if postgres pod is installed and deployed, if not you need to `lagerr destroy` and `lagerr setup` again. :/
 
@@ -75,13 +131,13 @@ for RabbitMQ: `rmq.localhost` in the browser, and the credentials are:
 for Grafana: type `monitoring.localhost` in the browser, and the credentials are:
 
 - user: `admin`
-- pass: `kubectl get secret --namespace monitoring -l app.kubernetes.io/component=admin-secret -o jsonpath="{.items[0].data.admin-password}" | base64 --decode ; echo` or alternatively you can take a look env varibales of monitoring-grafana-xxxxxxxx pod (the password is not fixed password, it changes on every new cluster setup) where you can also find the password. 
+- pass: `kubectl get secret --namespace monitoring -l app.kubernetes.io/component=admin-secret -o jsonpath="{.items[0].data.admin-password}" | base64 --decode ; echo` or alternatively you can take a look environment varibales of monitoring-grafana-xxxxxxxx pod (the password is not fixed password, it changes on every new cluster setup) where you can also find the password. 
 
 as you see below in the image, i have created a dedicated dashbord which shows a lot of related metrics.
 
 ![alt text](img/grafana_dashboard.png)
 
-## Testing with postman
+## Testing with curl
 
 Run this query from terminal 
 
@@ -113,6 +169,23 @@ you should get some think like this as response:
 
 ## Testing with k6
 
-run the following command in a terminal to start grafana k6 tests: `lagerr test`.
+k6 must be installed locally and available in the system PATH. The load test script uses the external k6 utility library from jslib.k6.io. Internet access is required.
+
+### macOS
+install k6 library: `brew install k6`
+
+The load test script is located in: `lib/k6/order.k6.js`
+
+### Load Test Profile
+
+The k6 script uses a staged load profile:
+
+- Ramp-up: increasing virtual users
+- Steady load phase
+- Ramp-down phase
+
+The goal is to simulate realistic system load conditions.
+
+Run the following command in a terminal to start grafana k6 tests: `lagerr test`.
 
 ![alt text](img/k6_test_started.png)
