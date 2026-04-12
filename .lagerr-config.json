@@ -1,8 +1,8 @@
 {
   "projectRoot": "/Users/cemildogan/cddev/bechelor/infrastructur",
   "lager": "/Users/cemildogan/cddev/bechelor/infrastructur/services/lager",
+  "lager-messaging": "/Users/cemildogan/cddev/bechelor/infrastructur/services/lager-messaging",
   "notification": "/Users/cemildogan/cddev/bechelor/infrastructur/services/notification",
   "order": "/Users/cemildogan/cddev/bechelor/infrastructur/services/order",
-  "lager-messaging": "/Users/cemildogan/cddev/bechelor/infrastructur/services/lager-messaging",
   "payment": "/Users/cemildogan/cddev/bechelor/infrastructur/services/payment"
 }
