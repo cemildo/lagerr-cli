@@ -1,0 +1,6 @@
+{
+  "projectRoot": "/Users/cemildogan/cddev/bechelor/infrastructur",
+  "lager": "/Users/cemildogan/cddev/bechelor/infrastructur/services/lager",
+  "notification": "/Users/cemildogan/cddev/bechelor/infrastructur/services/notification",
+  "order": "/Users/cemildogan/cddev/bechelor/infrastructur/services/order"
+}
