@@ -1,5 +1,5 @@
 # lager-cli
-An npm library to manage local kubernetes infrastructure setup cluster, load services, test and destroy cluster functionality.
+An npm library for managing in local kubernetes infrastructure: setup cluster, load services, testing with k6 and destroying cluster functionality.
 
 ## 1 -  node and npm versions
 ![alt text](img/node_npm_version.png)
@@ -16,10 +16,11 @@ this will install the library in your computer in the global npm folders, so it 
 ![alt text](img/lagerr_help.png)
 
 ## 4 - install local kubernetes 
-run `lagerr setup` this will install all the necessary components and it take scouple of minutes. in the installation process it will ask you the root path:
+run `lagerr setup` this will install all the necessary components and it takes couple of minutes. In the installation process it will ask you the root path:
 
 ![alt text](img/asking_root_path.png)
-open a new terminal and navigate into your infrastructure folder and run `pwd` this will give you the root path relative to your computer. for me it is `/Users/cemildogan/cddev/bechelor/infrastructur` copy and paste it in the `lagerr setup` terminal and hit enter. It will continue install and finally you should see the following screen:
+
+open a new terminal and navigate into your `infrastructure` folder (the folder that comes with git clone https://github.com/cemildo/lagerr) and run `pwd` this will give you the root path relative to your computer. for me it is `/Users/cemildogan/cddev/bechelor/infrastructur` copy and paste it in the `lagerr setup` terminal and hit enter. It will continue installation process and finally you should see the following screen:
 
 ![alt text](img/installation_finished.png)
 
@@ -27,7 +28,9 @@ now, when you open `docker desktop` you should see `lagerr-control-plane` is up 
 
 ![alt text](img/running_on_docker_desktop.png)
 
-a minute or so needed to start all the containers to be up and ready. I personally use a tool Lens (`https://lenshq.io/products/lens-k8s-ide`) to take a look at inside kubernetes and run some commands. this tool had a problem and in order to find local cluster it needs to be started from the terminal if you prefer to have it, install it and run it by `open -a Lens` command. this will bring up the following screen.
+a couple of minutes needed to start all the containers to be up and running. I personally use a tool called `Lens` (`https://lenshq.io/products/lens-k8s-ide`) to take a look at inside kubernetes and run some commands. this tool had a problem to find local cluster, a work around is: it needs to be started from the terminal.
+
+if you prefer to have it, install it and run it by `open -a Lens` command. this will bring up the following screen.
 
 ![alt text](img/lens_view.png)
 
@@ -35,8 +38,8 @@ a minute or so needed to start all the containers to be up and ready. I personal
 
 check if postgres pod is installed and deployed, if not you need to `lagerr destroy` and `lagerr setup` again. :/
 
-- if you find postgres pod then you should connect to it:
-  * check if port 5432 is forwarded, if not, do the forwarding in kubernetes `kubectl port-forward pod/<pod-name> 5432:5432`. 
+- if you find postgres pod then you must connect to it:
+  * check if port 5432 is forwarded, if not, do the forwarding in kubernetes `kubectl port-forward pod/<pod-name> 5432:5432` so we can reach it from outside of the kubernete cluster. 
   
   then use this password  `app123` and following settings to connect database with a program that allows you to connect and run queries on database.
 
@@ -46,10 +49,10 @@ check if postgres pod is installed and deployed, if not you need to `lagerr dest
   ![alt text](img/add_schema.png) 
 
 ## 5 - deploying services
-Right now non of the services are deployed we need to deploy them one by one.
+Right now none of the services are deployed we need to deploy them one by one.
 
 open a terminal and run `lagerr load order` this will build the order microservice image and deploy it to local kubernetes cluster (depending on where you run this command it might ask for permission hit `allow`).
-If everything is successfull, you should see the following screen, whci means service is successfully deployed. 
+If everything is successfull, you should see the following screen, which means service is successfully deployed. 
 
 ![alt text](img/service_deployed.png)
 
@@ -67,7 +70,7 @@ for RabbitMQ: `rmq.localhost` in the browser, and the credentials are:
 - pass: `app123`
   
 
-![alt text](img/grafana_dashboard.png)
+![alt text](img/rabbitmq_dashboard.png)
 
 for Grafana: type `monitoring.localhost` in the browser, and the credentials are:
 
