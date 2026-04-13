@@ -195,8 +195,9 @@ Run the following command in a terminal to start grafana k6 tests: `lagerr test`
 
 ## Some of the questions that are asked 
 
-### Quellcode aller vier Microservices
-In the lagerr repo under the services/ folder, you can find:
+### Quellcode aller vier Microservices
+
+In the `lagerr` repo under the services/ folder (https://github.com/cemildo/lagerr/tree/main/services), you can find:
 
 order
 payment
