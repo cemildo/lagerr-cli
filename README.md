@@ -1,5 +1,5 @@
 # lager-cli
-An npm library for managing in local kubernetes infrastructure: setup cluster, load services, testing with k6 and destroying cluster.
+An npm library for managing a local Kubernetes infrastructure, including cluster setup, service deployment, load testing with k6, and cluster teardown.
 
 ## Reproducibility
 
@@ -20,6 +20,9 @@ This allows accessing services via browser without manual configuration.
 Note:
 - On macOS, this requires elevated permissions (sudo)
 - If this step fails, the domains must be added manually to `/etc/hosts`
+  - 127.0.0.1 proxy.localhost
+  - 127.0.0.1 monitoring.localhost
+  - 127.0.0.1 rmq.localhost
 
 ## Kubernetes Setup
 
@@ -58,11 +61,7 @@ Kustimize Version: v5.7.1
 
 ## 2 - download both lagerr and lagerr-cli 
 make sure you download both repos in the same folder because we will need to set up root path for lagerr-cli to find files under infrastructur folder.
-
-https://github.com/cemildo/lagerr-cli
-https://github.com/cemildo/lagerr
-
-
+ 
 ![alt text](img/download-repos.png)
 
 ## 3 - navigate into lagerr-cli
@@ -163,7 +162,8 @@ you should get some think like this as response:
 
 ```
 {
-    "id":"f3238a97-bc64-41ab-8bd0-255b1e6d7d3c","customerId":"4e8d1455-c201-474f-a7f4-4df1acb2978c","totalAmount":2098.00,"status":"PAYMENT_PENDING","createdAt":"2026-04-12T22:47:14.753086591Z","updatedAt":"2026-04-12T22:47:14.753086591Z"
+    "id":"f3238a97-bc64-41ab-8bd0-255b1e6d7d3c","customerId":"4e8d1455-c201-474f-a7f4-4df1acb2978c","totalAmount":2098.00,
+    "status":"PAYMENT_PENDING","createdAt":"2026-04-12T22:47:14.753086591Z","updatedAt":"2026-04-12T22:47:14.753086591Z"
 }
 ```
 
@@ -171,8 +171,8 @@ you should get some think like this as response:
 
 k6 must be installed locally and available in the system PATH. The load test script uses the external k6 utility library from jslib.k6.io. Internet access is required.
 
-### macOS
-install k6 library: `brew install k6`
+### macOS, if k6 is not installed
+`brew install k6`
 
 The load test script is located in: `lib/k6/order.k6.js`
 
@@ -189,3 +189,43 @@ The goal is to simulate realistic system load conditions.
 Run the following command in a terminal to start grafana k6 tests: `lagerr test`.
 
 ![alt text](img/k6_test_started.png)
+
+## Some of the questions that are asked 
+
+### Quellcode aller vier Microservices
+In the lagerr repo under the services/ folder, you can find:
+
+order
+payment
+notification
+lager
+
+There’s also lager-messaging, which is a shared module.
+
+
+### Kubernetes-Manifeste / Helm Charts
+Each service has its own Kubernetes file k8s/deployment.yaml  inside its folder.
+
+There are also:
+
+central Kubernetes configs under apps/
+a Helm chart for PostgreSQL under charts/postgresql
+
+### lagerr-cli Quellcode
+The CLI tool is in the lagerr-cli repo.
+
+Main parts:
+
+bin/lagerr.js -> main CLI entry point
+lib/ -> contains commands like setup, load, destroy, test
+
+
+### Docker-Konfigurationen
+every service has its own Dockerfile inside its folder.
+
+
+### RabbitMQ-Konfiguration
+RabbitMQ is used and set up during the CLI process (namespace + port-forwarding), and credentials are mentioned in the README.
+
+https://github.com/cemildo/lagerr/blob/main/apps/infra/rabbitmq.yaml
+
