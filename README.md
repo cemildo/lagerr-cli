@@ -11,6 +11,8 @@ The environment can be fully recreated and be tested by using:
 - lagerr test
 - lagerr destroy
 
+This setup has been validated on macOS using Docker Desktop and KIND.
+
 ## Networking / Host Configuration
 
 During `lagerr setup`, the required host entries (e.g. `proxy.localhost`, `rmq.localhost`, `monitoring.localhost`) are automatically added to the system's hosts file.
@@ -62,7 +64,7 @@ Kustimize Version: v5.7.1
 (if not installed `brew install kubectl`)
 
 ## 2 - download both lagerr and lagerr-cli 
-make sure you download both repos in the same folder because we will need to set up root path for lagerr-cli to find files under infrastructur folder.
+make sure you download both repos (`lagerr` and `lagerr-cli`) in the same parent directory. because we will need to set up root path for lagerr-cli to find files under infrastructur (which comes with `lagerr`) folder.
  
 ![alt text](img/download-repos.png)
 
@@ -161,7 +163,7 @@ curl --location 'proxy.localhost/order/api/orders' \
 }'
 ```
 
-you should get some think like this as response:
+you should get something like this as response:
 
 ```
 {
