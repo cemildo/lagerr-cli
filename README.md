@@ -39,6 +39,8 @@ The full source code and all artifacts are available at:
 https://github.com/cemildo/lagerr  
 https://github.com/cemildo/lagerr-cli
 
+# Installation
+
 ## 1 -  Prerequisites
 
 ### node version
@@ -75,7 +77,7 @@ run `lagerr setup` this will install all the necessary components and it takes c
 
 ![alt text](img/asking_root_path.png)
 
-open a new terminal and navigate into your `infrastructure` folder (the folder that comes with git clone https://github.com/cemildo/lagerr) and run `pwd` this will give you the root path relative to your computer. for me it is `/Users/cemildogan/cddev/bechelor/infrastructur` copy and paste it in the `lagerr setup` terminal and hit enter. It will continue installation process and finally you should see the following screen:
+open a new terminal and navigate into your `infrastructure` folder (the folder that comes with git clone https://github.com/cemildo/lagerr) and run `pwd` this will give you the root path relative to your computer. for me it is `/Users/cemildogan/cddev/bechelor/infrastructur`, find yours and copy and paste it in the `lagerr setup` terminal and hit enter. It will continue installation process and finally you should see the following screen:
 
 ![alt text](img/installation_finished.png)
 
@@ -94,13 +96,14 @@ if you prefer to have it, install it and run it by `open -a Lens` command. this 
 check if postgres pod is installed and deployed, if not you need to `lagerr destroy` and `lagerr setup` again. :/
 
 - if you find postgres pod then you must connect to it:
-  * check if port 5432 is forwarded, if not, do the forwarding in kubernetes `kubectl port-forward pod/<pod-name> 5432:5432` so we can reach it from outside of the kubernete cluster. 
+  * check if port 5432 is forwarded, if not, do the forwarding in kubernetes `kubectl port-forward pod/<pod-name> 5432:5432` so we can reach it from outside of the kubernete cluster. If you get connection problems remove forwarding and do it again.
   
   then use this password  `app123` and following settings to connect database with a program that allows you to connect and run queries on database.
 
-![alt text](img/postgress_connection.png)
+  ![alt text](img/postgress_connection.png)
 
-- add following schema: 
+- add following schema (it is a must!):
+   
   ![alt text](img/add_schema.png) 
 
 ## 5 - deploying services
@@ -113,7 +116,7 @@ If everything is successfull, you should see the following screen, which means s
 
 then run the rest one by one `lagerr load notification`, `lagerr load payment`, `lagerr load lager`
 
-if you would like to change any environment variable (SAGA -> SAGA_OUTBOX or SAGA_OUTBOX -> SAGA)you can change it under each service `k8s/deployment.yaml` and in the `env: ...` section and run deployment script again `lagerr load <service-name>`. Or you can change it directly in kubernetes related deployment.yaml and restart the pod.
+if you would like to change any environment variable (SAGA -> SAGA_OUTBOX or SAGA_OUTBOX -> SAGA) you can change it under each micorservice code `k8s/deployment.yaml` and in the `env: ...` section and run deployment script again `lagerr load <service-name>`. Or you can change it directly in kubernetes related deployment.yaml and restart the pod.
 
 ![alt text](img/service_deployment_envs.png)
 
@@ -132,7 +135,7 @@ for Grafana: type `monitoring.localhost` in the browser, and the credentials are
 - user: `admin`
 - pass: `kubectl get secret --namespace monitoring -l app.kubernetes.io/component=admin-secret -o jsonpath="{.items[0].data.admin-password}" | base64 --decode ; echo` or alternatively you can take a look environment varibales of monitoring-grafana-xxxxxxxx pod (the password is not fixed password, it changes on every new cluster setup) where you can also find the password. 
 
-as you see below in the image, i have created a dedicated dashbord which shows a lot of related metrics.
+as you see below in the image, i have created a dedicated dashbord which shows a lot of related metrics. ( Dashboards > Bachelor Thesis - Saga / Outbox Metrics )
 
 ![alt text](img/grafana_dashboard.png)
 
