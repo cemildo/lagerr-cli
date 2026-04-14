@@ -193,7 +193,13 @@ The goal is to simulate realistic system load conditions.
 
 Run the following command in a terminal to start grafana k6 tests: `lagerr test`.
 
-![alt text](img/k6_test_started.png)
+![alt text](img/k6_tests_finished.png) 
+
+After running `lagerr test`, the k6 summary is automatically exported to:
+
+`artifacts/k6-summary.json`
+
+This file contains the aggregated load test results for the executed measurement run.
 
 ## Some of the questions that are asked 
 
