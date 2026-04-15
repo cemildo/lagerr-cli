@@ -52,7 +52,7 @@ v24.7.0
 9.8.0
 
 ### Docker Desktop: 
-v4.15.0
+![alt text](img/docker_settings.png)
 
 ### kind version
 kind v0.30.0 go1.25.0 darwin/arm64
